@@ -1,4 +1,3 @@
-
 const axios = require('axios');
 const api_domain = 'https://api.spoonacular.com/recipes';
 
@@ -35,7 +34,8 @@ async function searchRecipe(recipeName, cuisine, diet, intolerance, number) {
       diet: diet,
       intolerances: intolerance,
       number: number,
-      apiKey: process.env.spooncular_apiKey
+      apiKey: process.env.spooncular_apiKey,
+      addRecipeInformation: true
     }
   });
 
