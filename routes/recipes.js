@@ -41,7 +41,7 @@ router.post("/AddNewRecipe", async (req, res, next) => {
   }
 });
 
-module.exports = router;
+// module.exports = router;
 
 
 /**
@@ -68,6 +68,45 @@ router.get('/recipe/:recipeId', async (req, res, next) => {
   try {
     const recipe = await recipes_utils.getRecipeDetails(req.params.recipeId);
     res.send(recipe);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get("/MyFavoriteRecipes", async (req, res, next) => {
+  try {
+    const recipes = await DButils.execQuery("SELECT * FROM myFavoriteRecipes");
+
+    res.send(recipes);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get('/familyRecipe/:recipeId', async (req, res, next) => {
+  try {
+    const familyRecipes = await DButils.execQuery(`SELECT * FROM familyRecipes WHERE id='${req.params.recipeId}'`);
+    
+    res.send(familyRecipes);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get("/familyRecipes", async (req, res, next) => {
+  try {
+    const recipes = await DButils.execQuery(`SELECT 
+      title, 
+      image_url, 
+      ready_in_minutes, 
+      vegetarian, 
+      vegan, 
+      gluten_free, 
+      recipeBy, 
+      familyOccasions 
+      FROM familyRecipes`);
+
+    res.send(recipes);
   } catch (error) {
     next(error);
   }
