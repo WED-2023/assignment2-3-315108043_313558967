@@ -11,12 +11,12 @@ router.post("/Register", async (req, res, next) => {
     // username exists
     let user_details = {
       username: req.body.username,
-      firstname: req.body.firstname,
-      lastname: req.body.lastname,
+      firstname: req.body.firstName,
+      lastname: req.body.lastName,
       country: req.body.country,
       password: req.body.password,
       email: req.body.email,
-      profilePic: req.body.profilePic
+      profilePic: req.body.profilePictureUrl
     }
     let users = [];
     users = await DButils.execQuery("SELECT username from users");
@@ -31,7 +31,7 @@ router.post("/Register", async (req, res, next) => {
     );
     await DButils.execQuery(
       `INSERT INTO users VALUES ('${user_details.username}', '${user_details.firstname}', '${user_details.lastname}',
-      '${user_details.country}', '${hash_password}', '${user_details.email}')`
+      '${user_details.country}', '${hash_password}', '${user_details.email}', '${user_details.profilePictureUrl}')`
     );
     res.status(201).send({ message: "user created", success: true });
   } catch (error) {
@@ -43,6 +43,7 @@ router.post("/Login", async (req, res, next) => {
   try {
     // check that username exists
     const users = await DButils.execQuery("SELECT username FROM users");
+
     if (!users.find((x) => x.username === req.body.username))
       throw { status: 401, message: "Username or Password incorrect" };
 
@@ -64,9 +65,12 @@ router.post("/Login", async (req, res, next) => {
     // return cookie
     res.status(200).send({ message: "login succeeded", success: true });
   } catch (error) {
+    console.error("Error during login:", error);
     next(error);
   }
 });
+
+
 
 router.post("/Logout", function (req, res) {
   req.session.reset(); // reset the session info --> send cookie when  req.session == undefined!!
