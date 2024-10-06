@@ -106,12 +106,12 @@ app.use(function (err, req, res, next) {
 // const server = app.listen(port, () => {
 //   console.log(`Server listen on port ${port}`);
 // });
-
+//
 // process.on("SIGINT", function () {
 //   if (server) {
 //     server.close(() => console.log("server closed"));
 //   }
-//   process.exit();
+//   process.exit(); 
 // });
 
 module.exports = app;
